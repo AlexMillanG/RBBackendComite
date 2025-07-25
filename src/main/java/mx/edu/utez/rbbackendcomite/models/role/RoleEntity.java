@@ -1,4 +1,4 @@
-package mx.edu.utez.rbbackcomite.models.role;
+package mx.edu.utez.rbbackendcomite.models.role;
 
 import jakarta.persistence.*;
 import lombok.Data;
