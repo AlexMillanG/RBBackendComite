@@ -20,7 +20,7 @@ public class EventDto {
     private Long typeId;
 
     @NotBlank(message = "El estado no puede estar vacío")
-    @Pattern(regexp = "PRÓXIMAMENTE | EN EJECUCIÓN | FINALIZADO",
+    @Pattern(regexp = "PRÓXIMAMENTE | EN_EJECUCIÓN | FINALIZADO",
     message = "El estado debe ser PRÓXIMAMENTE, EN EJECUCIÓN o FINALIZADO")
     private String status;
 
@@ -28,7 +28,7 @@ public class EventDto {
     @Positive(message = "El ID del grupo debe ser un numero positivo")
     private Long groupId;
 
-    private List<@Positive(message = "cada ID de participante debe ser un numero positivo")Long>
+    private List<@Positive(message = "cada ID de participante debe ser un numero positivo")Long> participantIds;
 
     public EventEntity toEntity() {
         EventEntity event = new EventEntity();
