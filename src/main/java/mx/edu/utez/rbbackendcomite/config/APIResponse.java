@@ -22,6 +22,20 @@ public class APIResponse {
         this.status = status;
     }
 
+    public APIResponse(Object data, boolean error, String message) {
+        this.data = data;
+        this.error = error;
+        this.message = message;
+        this.status = error ? HttpStatus.BAD_REQUEST : HttpStatus.OK;
+    }
+
+    public APIResponse(Object data, boolean error, String message, HttpStatus status) {
+        this.data = data;
+        this.error = error;
+        this.message = message;
+        this.status = status;
+    }
+
     public Object getData() {
         return data;
     }
