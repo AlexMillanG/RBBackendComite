@@ -8,8 +8,8 @@ import mx.edu.utez.rbbackendcomite.models.event.EventRepository;
 import mx.edu.utez.rbbackendcomite.models.event.EventStatus;
 import mx.edu.utez.rbbackendcomite.models.eventType.EventTypeRepository;
 import mx.edu.utez.rbbackendcomite.models.group.GroupRepository;
-import mx.edu.utez.rbbackendcomite.models.user.UserEntity;
-import mx.edu.utez.rbbackendcomite.models.user.UserRepository;
+//import mx.edu.utez.rbbackendcomite.models.user.UserEntity;
+//import mx.edu.utez.rbbackendcomite.models.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,14 +25,14 @@ public class EventService {
     private final EventRepository repository;
     private final EventTypeRepository eventTypeRepository;
     private final GroupRepository groupRepository;
-    private final UserRepository userRepository;
+   // private final UserRepository userRepository;
 
     public EventService(EventRepository repository, EventTypeRepository eventTypeRepository,
-                        GroupRepository groupRepository, UserRepository userRepository) {
+                        GroupRepository groupRepository) {
         this.repository = repository;
         this.eventTypeRepository = eventTypeRepository;
         this.groupRepository = groupRepository;
-        this.userRepository = userRepository;
+
     }
 
     public ResponseEntity<ApiResponse> getAll() {
@@ -134,7 +134,7 @@ public class EventService {
         return ResponseEntity.ok(new ApiResponse(events, false, "Eventos del tipo encontrados"));
     }
 
-    public ResponseEntity<ApiResponse> setUsersToEvent(Long eventId, List<Long> userIds) {
+   /* public ResponseEntity<ApiResponse> setUsersToEvent(Long eventId, List<Long> userIds) {
         Optional<EventEntity> optionalEvent = repository.findById(eventId);
         if (optionalEvent.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -156,5 +156,5 @@ public class EventService {
         event.setParticipants(users);
         EventEntity updatedEvent = repository.save(event);
         return ResponseEntity.ok(new ApiResponse(updatedEvent, false, "Usuarios asignados al evento correctamente"));
-    }
+    }*/
 }
