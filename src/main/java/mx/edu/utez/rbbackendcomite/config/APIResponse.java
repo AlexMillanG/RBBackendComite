@@ -1,18 +1,25 @@
 package mx.edu.utez.rbbackendcomite.config;
 
-public class ApiResponse {
+import org.springframework.http.HttpStatus;
+
+public class APIResponse {
 
     private Object data;
     private boolean error;
     private String message;
+    private HttpStatus status;
 
-    public ApiResponse(Object data, boolean error, String message) {
-        this.data = data;
-        this.error = error;
+    public APIResponse(String message, boolean error, HttpStatus status) {
         this.message = message;
+        this.error = error;
+        this.status = status;
     }
 
-    public ApiResponse() {
+    public APIResponse(String message, Object data, boolean error, HttpStatus status) {
+        this.message = message;
+        this.data = data;
+        this.error = error;
+        this.status = status;
     }
 
     public Object getData() {
@@ -37,5 +44,12 @@ public class ApiResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+    public HttpStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(HttpStatus status) {
+        this.status = status;
     }
 }
