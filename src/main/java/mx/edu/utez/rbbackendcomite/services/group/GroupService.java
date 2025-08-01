@@ -2,7 +2,7 @@ package mx.edu.utez.rbbackendcomite.services.group;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import mx.edu.utez.rbbackendcomite.config.ApiResponse;
+import mx.edu.utez.rbbackendcomite.config.ApiResponseDto;
 import mx.edu.utez.rbbackendcomite.models.group.GroupDto;
 import mx.edu.utez.rbbackendcomite.models.group.GroupEntity;
 import mx.edu.utez.rbbackendcomite.models.group.GroupRepository;
@@ -18,45 +18,45 @@ public class GroupService {
 
     private final GroupRepository groupRepository;
 
-    public ResponseEntity<ApiResponse> save(@Valid GroupDto dto) {
+    public ResponseEntity<ApiResponseDto> save(@Valid GroupDto dto) {
         // Validar que no exista un grupo con el mismo nombre (opcional)
         if (groupRepository.existsByName(dto.getName())) {
             return new ResponseEntity<>(
-                    new ApiResponse(null, true, "Ya existe un grupo con ese nombre"),
+                    new ApiResponseDto(null, true, "Ya existe un grupo con ese nombre"),
                     HttpStatus.BAD_REQUEST);
         }
 
         GroupEntity group = dto.toEntity();
 
         return new ResponseEntity<>(
-                new ApiResponse(groupRepository.save(group), false, "Grupo registrado correctamente"),
+                new ApiResponseDto(groupRepository.save(group), false, "Grupo registrado correctamente"),
                 HttpStatus.CREATED
         );
     }
 
-    public ResponseEntity<ApiResponse> getAll() {
-        return new ResponseEntity<>(new ApiResponse(groupRepository.findAll(), false, "OK"), HttpStatus.OK);
+    public ResponseEntity<ApiResponseDto> getAll() {
+        return new ResponseEntity<>(new ApiResponseDto(groupRepository.findAll(), false, "OK"), HttpStatus.OK);
     }
 
-    public ResponseEntity<ApiResponse> getOne(Long id) {
+    public ResponseEntity<ApiResponseDto> getOne(Long id) {
         Optional<GroupEntity> optionalGroup = groupRepository.findById(id);
         if (optionalGroup.isEmpty())
-            return new ResponseEntity<>(new ApiResponse(null, true, "Grupo no encontrado"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiResponseDto(null, true, "Grupo no encontrado"), HttpStatus.NOT_FOUND);
 
-        return new ResponseEntity<>(new ApiResponse(optionalGroup.get(), false, "OK"), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseDto(optionalGroup.get(), false, "OK"), HttpStatus.OK);
     }
 
-    public ResponseEntity<ApiResponse> update(Long id, @Valid GroupDto dto) {
+    public ResponseEntity<ApiResponseDto> update(Long id, @Valid GroupDto dto) {
         Optional<GroupEntity> optionalGroup = groupRepository.findById(id);
         if (optionalGroup.isEmpty())
-            return new ResponseEntity<>(new ApiResponse(null, true, "Grupo no encontrado"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiResponseDto(null, true, "Grupo no encontrado"), HttpStatus.NOT_FOUND);
 
         GroupEntity group = optionalGroup.get();
 
         // Validar que el nuevo nombre no choque con otro grupo distinto
         if (!group.getName().equals(dto.getName()) && groupRepository.existsByName(dto.getName())) {
             return new ResponseEntity<>(
-                    new ApiResponse(null, true, "Ya existe otro grupo con ese nombre"),
+                    new ApiResponseDto(null, true, "Ya existe otro grupo con ese nombre"),
                     HttpStatus.BAD_REQUEST);
         }
 
@@ -65,17 +65,17 @@ public class GroupService {
         group.setNeighborhood(dto.getNeighborhood());
 
         return new ResponseEntity<>(
-                new ApiResponse(groupRepository.save(group), false, "Grupo actualizado correctamente"),
+                new ApiResponseDto(groupRepository.save(group), false, "Grupo actualizado correctamente"),
                 HttpStatus.OK
         );
     }
 
-    public ResponseEntity<ApiResponse> delete(Long id) {
+    public ResponseEntity<ApiResponseDto> delete(Long id) {
         Optional<GroupEntity> optionalGroup = groupRepository.findById(id);
         if (optionalGroup.isEmpty())
-            return new ResponseEntity<>(new ApiResponse(null, true, "Grupo no encontrado"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiResponseDto(null, true, "Grupo no encontrado"), HttpStatus.NOT_FOUND);
 
         groupRepository.deleteById(id);
-        return new ResponseEntity<>(new ApiResponse(null, false, "Grupo eliminado correctamente"), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseDto(null, false, "Grupo eliminado correctamente"), HttpStatus.OK);
     }
 }

@@ -2,44 +2,32 @@ package mx.edu.utez.rbbackendcomite.config;
 
 import org.springframework.http.HttpStatus;
 
-public class ApiResponse {
+public class ApiResponseDto {
 
     private Object data;
     private boolean error;
     private String message;
     private HttpStatus status;
 
-    // Constructor completo
-    public ApiResponse(Object data, boolean error, String message, HttpStatus status) {
+    public ApiResponseDto(Object data, boolean error, String message, HttpStatus status) {
         this.data = data;
         this.error = error;
         this.message = message;
         this.status = status;
     }
 
-    // Constructor sin HttpStatus
-    public ApiResponse(Object data, boolean error, String message) {
-        this.data = data;
-        this.error = error;
-        this.message = message;
-        this.status = error ? HttpStatus.BAD_REQUEST : HttpStatus.OK;
+    public ApiResponseDto(Object data, boolean error, String message) {
+        this(data, error, message, error ? HttpStatus.BAD_REQUEST : HttpStatus.OK);
     }
 
-    // Constructor sin data
-    public ApiResponse(String message, boolean error, HttpStatus status) {
-        this.message = message;
-        this.error = error;
-        this.status = status;
+    public ApiResponseDto(String message, boolean error, HttpStatus status) {
+        this(null, error, message, status);
     }
 
-    // Constructor sin status ni data
-    public ApiResponse(String message, boolean error) {
-        this.message = message;
-        this.error = error;
-        this.status = error ? HttpStatus.BAD_REQUEST : HttpStatus.OK;
+    public ApiResponseDto(String message, boolean error) {
+        this(null, error, message, error ? HttpStatus.BAD_REQUEST : HttpStatus.OK);
     }
 
-    // Getters and Setters
     public Object getData() {
         return data;
     }

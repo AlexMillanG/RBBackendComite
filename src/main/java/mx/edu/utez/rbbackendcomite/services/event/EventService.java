@@ -1,7 +1,7 @@
 package mx.edu.utez.rbbackendcomite.services.event;
 
 import jakarta.transaction.Transactional;
-import mx.edu.utez.rbbackendcomite.config.ApiResponse;
+import mx.edu.utez.rbbackendcomite.config.ApiResponseDto;
 import mx.edu.utez.rbbackendcomite.models.event.EventDto;
 import mx.edu.utez.rbbackendcomite.models.event.EventEntity;
 import mx.edu.utez.rbbackendcomite.models.event.EventRepository;
@@ -35,27 +35,27 @@ public class EventService {
 
     }
 
-    public ResponseEntity<ApiResponse> getAll() {
+    public ResponseEntity<ApiResponseDto> getAll() {
         List<EventEntity> events = repository.findAll();
-        return ResponseEntity.ok(new ApiResponse(events, false, "Eventos encontrados"));
+        return ResponseEntity.ok(new ApiResponseDto(events, false, "Eventos encontrados"));
     }
 
-    public ResponseEntity<ApiResponse> getOne(Long id) {
+    public ResponseEntity<ApiResponseDto> getOne(Long id) {
         Optional<EventEntity> found = repository.findById(id);
-        return found.map(event -> ResponseEntity.ok(new ApiResponse(event, false, "Evento encontrado")))
+        return found.map(event -> ResponseEntity.ok(new ApiResponseDto(event, false, "Evento encontrado")))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new ApiResponse(null, true, "Evento no encontrado")));
+                        .body(new ApiResponseDto(null, true, "Evento no encontrado")));
     }
 
-    public ResponseEntity<ApiResponse> create(EventDto dto) {
+    public ResponseEntity<ApiResponseDto> create(EventDto dto) {
         var eventType = eventTypeRepository.findById(dto.getTypeId());
         if (eventType.isEmpty()) {
-            return ResponseEntity.badRequest().body(new ApiResponse(null, true, "Tipo de evento no encontrado"));
+            return ResponseEntity.badRequest().body(new ApiResponseDto(null, true, "Tipo de evento no encontrado"));
         }
 
         var group = groupRepository.findById(dto.getGroupId());
         if (group.isEmpty()) {
-            return ResponseEntity.badRequest().body(new ApiResponse(null, true, "Grupo de evento no encontrado"));
+            return ResponseEntity.badRequest().body(new ApiResponseDto(null, true, "Grupo de evento no encontrado"));
         }
 
         EventEntity event = new EventEntity();
@@ -67,24 +67,24 @@ public class EventService {
 
         EventEntity saved = repository.save(event);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse(saved, false, "Evento registrado correctamente"));
+                .body(new ApiResponseDto(saved, false, "Evento registrado correctamente"));
     }
 
-    public ResponseEntity<ApiResponse> update(Long id, EventDto dto) {
+    public ResponseEntity<ApiResponseDto> update(Long id, EventDto dto) {
         Optional<EventEntity> found = repository.findById(id);
         if (found.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse(null, true, "Evento no encontrado"));
+                    .body(new ApiResponseDto(null, true, "Evento no encontrado"));
         }
 
         var eventType = eventTypeRepository.findById(dto.getTypeId());
         if (eventType.isEmpty()) {
-            return ResponseEntity.badRequest().body(new ApiResponse(null, true, "Tipo de evento no encontrado"));
+            return ResponseEntity.badRequest().body(new ApiResponseDto(null, true, "Tipo de evento no encontrado"));
         }
 
         var group = groupRepository.findById(dto.getGroupId());
         if (group.isEmpty()) {
-            return ResponseEntity.badRequest().body(new ApiResponse(null, true, "Grupo no encontrado"));
+            return ResponseEntity.badRequest().body(new ApiResponseDto(null, true, "Grupo no encontrado"));
         }
 
         EventEntity entity = found.get();
@@ -95,50 +95,50 @@ public class EventService {
         entity.setGroup(group.get());
 
         EventEntity updated = repository.save(entity);
-        return ResponseEntity.ok(new ApiResponse(updated, false, "Evento actualizado correctamente"));
+        return ResponseEntity.ok(new ApiResponseDto(updated, false, "Evento actualizado correctamente"));
     }
 
-    public ResponseEntity<ApiResponse> delete(Long id) {
+    public ResponseEntity<ApiResponseDto> delete(Long id) {
         if (!repository.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse(null, true, "Evento no encontrado"));
+                    .body(new ApiResponseDto(null, true, "Evento no encontrado"));
         }
 
         repository.deleteById(id);
-        return ResponseEntity.ok(new ApiResponse(null, false, "Evento eliminado correctamente"));
+        return ResponseEntity.ok(new ApiResponseDto(null, false, "Evento eliminado correctamente"));
     }
 
-    public ResponseEntity<ApiResponse> getEventsByStatus(String status) {
+    public ResponseEntity<ApiResponseDto> getEventsByStatus(String status) {
         try {
             EventStatus eventStatus = EventStatus.valueOf(status);
             List<EventEntity> events = repository.findByStatus(eventStatus);
-            return ResponseEntity.ok(new ApiResponse(events, false, "Eventos encontrados por estado"));
+            return ResponseEntity.ok(new ApiResponseDto(events, false, "Eventos encontrados por estado"));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(new ApiResponse(null, true, "Estado de evento no válido"));
+            return ResponseEntity.badRequest().body(new ApiResponseDto(null, true, "Estado de evento no válido"));
         }
     }
 
-    public ResponseEntity<ApiResponse> getEventsByGroup(Long groupId) {
+    public ResponseEntity<ApiResponseDto> getEventsByGroup(Long groupId) {
         if (!groupRepository.existsById(groupId)) {
-            return ResponseEntity.badRequest().body(new ApiResponse(null, true, "Grupo no encontrado"));
+            return ResponseEntity.badRequest().body(new ApiResponseDto(null, true, "Grupo no encontrado"));
         }
         List<EventEntity> events = repository.findByGroupId(groupId);
-        return ResponseEntity.ok(new ApiResponse(events, false, "Eventos del grupo encontrados"));
+        return ResponseEntity.ok(new ApiResponseDto(events, false, "Eventos del grupo encontrados"));
     }
 
-    public ResponseEntity<ApiResponse> getEventsByType(Long typeId) {
+    public ResponseEntity<ApiResponseDto> getEventsByType(Long typeId) {
         if (!eventTypeRepository.existsById(typeId)) {
-            return ResponseEntity.badRequest().body(new ApiResponse(null, true, "Tipo de evento no encontrado"));
+            return ResponseEntity.badRequest().body(new ApiResponseDto(null, true, "Tipo de evento no encontrado"));
         }
         List<EventEntity> events = repository.findByTypeId(typeId);
-        return ResponseEntity.ok(new ApiResponse(events, false, "Eventos del tipo encontrados"));
+        return ResponseEntity.ok(new ApiResponseDto(events, false, "Eventos del tipo encontrados"));
     }
 
-   /* public ResponseEntity<ApiResponse> setUsersToEvent(Long eventId, List<Long> userIds) {
+   /* public ResponseEntity<ApiResponseDto> setUsersToEvent(Long eventId, List<Long> userIds) {
         Optional<EventEntity> optionalEvent = repository.findById(eventId);
         if (optionalEvent.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse(null, true, "Evento no encontrado"));
+                    .body(new ApiResponseDto(null, true, "Evento no encontrado"));
         }
 
         EventEntity event = optionalEvent.get();
@@ -148,13 +148,13 @@ public class EventService {
             Optional<UserEntity> optionalUser = userRepository.findById(userId);
             if (optionalUser.isEmpty()) {
                 return ResponseEntity.badRequest()
-                        .body(new ApiResponse(null, true, "Usuario con ID " + userId + " no encontrado"));
+                        .body(new ApiResponseDto(null, true, "Usuario con ID " + userId + " no encontrado"));
             }
             users.add(optionalUser.get());
         }
 
         event.setParticipants(users);
         EventEntity updatedEvent = repository.save(event);
-        return ResponseEntity.ok(new ApiResponse(updatedEvent, false, "Usuarios asignados al evento correctamente"));
+        return ResponseEntity.ok(new ApiResponseDto(updatedEvent, false, "Usuarios asignados al evento correctamente"));
     }*/
 }
