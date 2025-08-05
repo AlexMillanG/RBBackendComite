@@ -1,12 +1,21 @@
 package mx.edu.utez.rbbackendcomite.config;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.HttpStatus;
 
+@Schema(description = "Respuesta estándar de la API")
 public class ApiResponseDto {
 
+    @Schema(description = "Datos devueltos", example = "{}", nullable = true)
     private Object data;
+
+    @Schema(description = "Indica si hubo un error", example = "false")
     private boolean error;
+
+    @Schema(description = "Mensaje descriptivo", example = "Operación exitosa")
     private String message;
+
+    @Schema(description = "Código HTTP de estado", example = "200")
     private HttpStatus status;
 
     public ApiResponseDto(Object data, boolean error, String message, HttpStatus status) {
