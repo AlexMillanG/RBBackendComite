@@ -7,6 +7,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class WebSecurityConfig {
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -15,6 +16,8 @@ public class WebSecurityConfig {
                         .requestMatchers(
                                 "/api/",              // API
                                 "/swagger-ui/",      // Swagger UI
+                                "/api/**",              // API
+                                "/swagger-ui/**",      // Swagger UI
                                 "/v3/api-docs/**"      // Documentación OpenAPI
                         ).permitAll()
                         .anyRequest().permitAll() // Permite todo lo demás

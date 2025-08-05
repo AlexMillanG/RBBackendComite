@@ -1,12 +1,21 @@
 package mx.edu.utez.rbbackendcomite.config;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.HttpStatus;
 
+@Schema(description = "Respuesta estándar de la API")
 public class APIResponse {
 
+    @Schema(description = "Datos devueltos", example = "{}", nullable = true)
     private Object data;
+
+    @Schema(description = "Indica si hubo un error", example = "false")
     private boolean error;
+
+    @Schema(description = "Mensaje descriptivo", example = "Operación exitosa")
     private String message;
+
+    @Schema(description = "Código HTTP de estado", example = "200")
     private HttpStatus status;
 
     public APIResponse(String message, boolean error, HttpStatus status) {
@@ -59,6 +68,7 @@ public class APIResponse {
     public void setMessage(String message) {
         this.message = message;
     }
+
     public HttpStatus getStatus() {
         return status;
     }
