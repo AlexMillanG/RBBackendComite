@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import mx.edu.utez.rbbackendcomite.config.APIResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import mx.edu.utez.rbbackendcomite.config.ApiResponseDto;
 import mx.edu.utez.rbbackendcomite.models.eventType.EventTypeDto;
 import mx.edu.utez.rbbackendcomite.services.eventType.EventTypeServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +32,15 @@ public class eventTypeController {
                     responseCode = "200",
                     description = "Obtencion de todos las Cedes",
                     content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class)),
-                            @Content(mediaType = "application/xml", schema = @Schema(implementation = APIResponse.class))
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponseDto.class)),
+                            @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiResponseDto.class))
 
                     }
             )
     })
-    public ResponseEntity<APIResponse> getAll() {
-        ResponseEntity<APIResponse> entity = eventTypeServices.getAll();
-        APIResponse response = entity.getBody();
+    public ResponseEntity<ApiResponseDto> getAll() {
+        ResponseEntity<ApiResponseDto> entity = eventTypeServices.getAll();
+        ApiResponseDto response = entity.getBody();
         return new ResponseEntity<>(response, response.getStatus());
     }
 
@@ -50,8 +51,8 @@ public class eventTypeController {
                     responseCode = "200",
                     description = "Obtencion de una sola Cede",
                     content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class)),
-                            @Content(mediaType = "application/xml", schema = @Schema(implementation = APIResponse.class))
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponseDto.class)),
+                            @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiResponseDto.class))
 
                     }
             ),
@@ -59,8 +60,8 @@ public class eventTypeController {
                     responseCode = "404",
                     description = "No se logro encontrar la Cede",
                     content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class)),
-                            @Content(mediaType = "application/xml", schema = @Schema(implementation = APIResponse.class))
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponseDto.class)),
+                            @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiResponseDto.class))
 
                     }
             ),
@@ -68,13 +69,13 @@ public class eventTypeController {
                     responseCode = "500",
                     description = "No se pudo consultar la Cede",
                     content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class)),
-                            @Content(mediaType = "application/xml", schema = @Schema(implementation = APIResponse.class))
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponseDto.class)),
+                            @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiResponseDto.class))
 
                     }
             )
     })
-    public ResponseEntity<APIResponse> getOne(@PathVariable("id") Long id) {
+    public ResponseEntity<ApiResponseDto> getOne(@PathVariable("id") Long id) {
         return eventTypeServices.getOne(id);
     }
 
@@ -85,24 +86,24 @@ public class eventTypeController {
                     responseCode = "201",
                     description = "Registro exitoso del tipo de evento",
                     content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class)),
-                            @Content(mediaType = "application/xml", schema = @Schema(implementation = APIResponse.class))
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponseDto.class)),
+                            @Content(mediaType = "application/xml", schema = @Schema(implementation = ApiResponseDto.class))
                     }
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "Ya existe un tipo de evento con ese nombre",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponseDto.class))
             ),
             @ApiResponse(
                     responseCode = "500",
                     description = "Error al registrar el tipo de evento",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponseDto.class))
             )
     })
-    public ResponseEntity<APIResponse> save(@RequestBody EventTypeDto payload) {
-        ResponseEntity<APIResponse> entity = eventTypeServices.insert(payload);
-        APIResponse response = entity.getBody();
+    public ResponseEntity<ApiResponseDto> save(@RequestBody EventTypeDto payload) {
+        ResponseEntity<ApiResponseDto> entity = eventTypeServices.insert(payload);
+        ApiResponseDto response = entity.getBody();
         return new ResponseEntity<>(response, response.getStatus());
     }
 
@@ -111,7 +112,7 @@ public class eventTypeController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tipo de evento actualizado correctamente",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = APIResponse.class))),
+                            schema = @Schema(implementation = ApiResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos",
                     content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "Tipo de evento no encontrado",
@@ -119,7 +120,7 @@ public class eventTypeController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor",
                     content = @Content(mediaType = "application/json"))
     })
-    public ResponseEntity<APIResponse> update(@PathVariable Long id, @RequestBody EventTypeDto payload) {
+    public ResponseEntity<ApiResponseDto> update(@PathVariable Long id, @RequestBody EventTypeDto payload) {
         return eventTypeServices.update(id, payload);
     }
 
@@ -128,13 +129,13 @@ public class eventTypeController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tipo de evento eliminado correctamente",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = APIResponse.class))),
+                            schema = @Schema(implementation = ApiResponseDto.class))),
             @ApiResponse(responseCode = "404", description = "Tipo de evento no encontrado",
                     content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor",
                     content = @Content(mediaType = "application/json"))
     })
-    public ResponseEntity<APIResponse> delete(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto> delete(@PathVariable Long id) {
         return eventTypeServices.delete(id);
     }
 }
