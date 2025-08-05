@@ -1,7 +1,7 @@
 package mx.edu.utez.rbbackendcomite.controller.event;
 
 import jakarta.validation.Valid;
-import mx.edu.utez.rbbackendcomite.config.ApiResponse;
+import mx.edu.utez.rbbackendcomite.config.ApiResponseDto;
 import mx.edu.utez.rbbackendcomite.models.event.EventDto;
 import mx.edu.utez.rbbackendcomite.services.event.EventService;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +18,17 @@ public class EventController {
     }
 
     @GetMapping("")
-    public ResponseEntity<ApiResponse> findAll() {
+    public ResponseEntity<ApiResponseDto> findAll() {
         return eventService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse> findById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto> findById(@PathVariable Long id) {
         return eventService.getOne(id);
     }
 
     @PostMapping("")
-    public ResponseEntity<ApiResponse> save(@RequestBody @Valid EventDto payload) {
+    public ResponseEntity<ApiResponseDto> save(@RequestBody @Valid EventDto payload) {
         return eventService.create(payload);
     }
 }
