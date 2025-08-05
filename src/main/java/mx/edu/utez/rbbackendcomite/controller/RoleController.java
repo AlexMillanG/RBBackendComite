@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import mx.edu.utez.rbbackendcomite.config.APIResponse;
+import mx.edu.utez.rbbackendcomite.config.ApiResponseDto;
 import mx.edu.utez.rbbackendcomite.models.role.RoleDto;
 import mx.edu.utez.rbbackendcomite.services.role.RoleServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,9 @@ public class RoleController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de roles encontrada",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = APIResponse.class)))
+                            schema = @Schema(implementation = ApiResponseDto.class)))
     })
-    public ResponseEntity<APIResponse> getAll() {
+    public ResponseEntity<ApiResponseDto> getAll() {
         return service.getAll();
     }
 
@@ -39,12 +40,12 @@ public class RoleController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Rol encontrado",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = APIResponse.class))),
+                            schema = @Schema(implementation = ApiResponseDto.class))),
             @ApiResponse(responseCode = "404", description = "Rol no encontrado",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = APIResponse.class)))
+                            schema = @Schema(implementation = ApiResponseDto.class)))
     })
-    public ResponseEntity<APIResponse> getOne(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto> getOne(@PathVariable Long id) {
         return service.getOne(id);
     }
 
@@ -53,12 +54,12 @@ public class RoleController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Rol creado",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = APIResponse.class))),
+                            schema = @Schema(implementation = ApiResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "Rol duplicado",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = APIResponse.class)))
+                            schema = @Schema(implementation = ApiResponseDto.class)))
     })
-    public ResponseEntity<APIResponse> insert(@RequestBody RoleDto dto) {
+    public ResponseEntity<ApiResponseDto> insert(@RequestBody RoleDto dto) {
         return service.insert(dto);
     }
 
@@ -67,12 +68,12 @@ public class RoleController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Rol actualizado",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = APIResponse.class))),
+                            schema = @Schema(implementation = ApiResponseDto.class))),
             @ApiResponse(responseCode = "404", description = "Rol no encontrado",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = APIResponse.class)))
+                            schema = @Schema(implementation = ApiResponseDto.class)))
     })
-    public ResponseEntity<APIResponse> update(@PathVariable Long id, @RequestBody RoleDto dto) {
+    public ResponseEntity<ApiResponseDto> update(@PathVariable Long id, @RequestBody RoleDto dto) {
         return service.update(id, dto);
     }
 
@@ -81,12 +82,12 @@ public class RoleController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Rol eliminado",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = APIResponse.class))),
+                            schema = @Schema(implementation = ApiResponseDto.class))),
             @ApiResponse(responseCode = "404", description = "Rol no encontrado",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = APIResponse.class)))
+                            schema = @Schema(implementation = ApiResponseDto.class)))
     })
-    public ResponseEntity<APIResponse> delete(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto> delete(@PathVariable Long id) {
         return service.delete(id);
     }
 }
