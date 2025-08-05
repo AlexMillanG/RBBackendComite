@@ -4,90 +4,137 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import mx.edu.utez.rbbackendcomite.config.APIResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import mx.edu.utez.rbbackendcomite.config.ApiResponseDto;
 import mx.edu.utez.rbbackendcomite.models.eventType.EventTypeDto;
 import mx.edu.utez.rbbackendcomite.services.eventType.EventTypeServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 @RestController
 @RequestMapping("/api/eventtype")
-@Tag(name = "Controlador de Tipos de Evento", description = "Operaciones relacionadas con los tipos de evento")
+@Tag(name = "Controlador de Event Tyoe" , description = "Operaciones realizadas con los event type")
 @SecurityRequirement(name = "barerAuth")
-public class EventTypeController {
+public class eventTypeController {
 
     @Autowired
     private EventTypeServices eventTypeServices;
 
     @GetMapping
-    @Operation(summary = "Obtener todos los tipos de evento", description = "Obtiene todos los tipos de evento registrados.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Tipos de evento obtenidos correctamente",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponseDto.class)))
+    @Operation(summary = "Obtencion de todos los event types", description = "Mandar a traer todos las cedes registrados en el sistema.")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Obtencion de todos las Cedes",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class)),
+                            @Content(mediaType = "application/xml", schema = @Schema(implementation = APIResponse.class))
+
+                    }
+            )
     })
-    public ResponseEntity<ApiResponseDto> getAll() {
-        return eventTypeServices.getAll();
+    public ResponseEntity<APIResponse> getAll() {
+        ResponseEntity<APIResponse> entity = eventTypeServices.getAll();
+        APIResponse response = entity.getBody();
+        return new ResponseEntity<>(response, response.getStatus());
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener un tipo de evento", description = "Obtiene un tipo de evento por su ID.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Tipo de evento obtenido correctamente",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponseDto.class))),
-            @ApiResponse(responseCode = "404", description = "Tipo de evento no encontrado",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponseDto.class))),
-            @ApiResponse(responseCode = "500", description = "Error interno al obtener el tipo de evento",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponseDto.class)))
+    @Operation(summary = "Obtencion de un solo tipo de evento", description = "Mandar a traer una sola Cede con uso del id dentro del sistema.")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Obtencion de una sola Cede",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class)),
+                            @Content(mediaType = "application/xml", schema = @Schema(implementation = APIResponse.class))
+
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "No se logro encontrar la Cede",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class)),
+                            @Content(mediaType = "application/xml", schema = @Schema(implementation = APIResponse.class))
+
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "No se pudo consultar la Cede",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class)),
+                            @Content(mediaType = "application/xml", schema = @Schema(implementation = APIResponse.class))
+
+                    }
+            )
     })
-    public ResponseEntity<ApiResponseDto> getOne(@PathVariable Long id) {
+    public ResponseEntity<APIResponse> getOne(@PathVariable("id") Long id) {
         return eventTypeServices.getOne(id);
     }
 
     @PostMapping
-    @Operation(summary = "Registrar nuevo tipo de evento", description = "Crea un nuevo tipo de evento.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Tipo de evento registrado correctamente",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponseDto.class))),
-            @ApiResponse(responseCode = "400", description = "Ya existe un tipo de evento con ese nombre",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponseDto.class))),
-            @ApiResponse(responseCode = "500", description = "Error al registrar el tipo de evento",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponseDto.class)))
+    @Operation(summary = "Crear un nuevo tipo de evento", description = "Registra un nuevo tipo de evento en el sistema.")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Registro exitoso del tipo de evento",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class)),
+                            @Content(mediaType = "application/xml", schema = @Schema(implementation = APIResponse.class))
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Ya existe un tipo de evento con ese nombre",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error al registrar el tipo de evento",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = APIResponse.class))
+            )
     })
-    public ResponseEntity<ApiResponseDto> save(@RequestBody EventTypeDto payload) {
-        return eventTypeServices.insert(payload);
+    public ResponseEntity<APIResponse> save(@RequestBody EventTypeDto payload) {
+        ResponseEntity<APIResponse> entity = eventTypeServices.insert(payload);
+        APIResponse response = entity.getBody();
+        return new ResponseEntity<>(response, response.getStatus());
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Actualizar tipo de evento", description = "Actualiza un tipo de evento existente por ID.")
-    @ApiResponses({
+    @Operation(summary = "Actualizar tipo de evento", description = "Actualiza un tipo de evento existente")
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tipo de evento actualizado correctamente",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponseDto.class))),
-            @ApiResponse(responseCode = "400", description = "Datos inválidos",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = APIResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos",
                     content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "Tipo de evento no encontrado",
                     content = @Content(mediaType = "application/json")),
-            @ApiResponse(responseCode = "500", description = "Error interno al actualizar",
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor",
                     content = @Content(mediaType = "application/json"))
     })
-    public ResponseEntity<ApiResponseDto> update(@PathVariable Long id, @RequestBody EventTypeDto payload) {
+    public ResponseEntity<APIResponse> update(@PathVariable Long id, @RequestBody EventTypeDto payload) {
         return eventTypeServices.update(id, payload);
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Eliminar tipo de evento", description = "Elimina un tipo de evento existente por ID.")
-    @ApiResponses({
+    @Operation(summary = "Eliminar tipo de evento", description = "Elimina un tipo de evento por su ID")
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tipo de evento eliminado correctamente",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponseDto.class))),
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = APIResponse.class))),
             @ApiResponse(responseCode = "404", description = "Tipo de evento no encontrado",
                     content = @Content(mediaType = "application/json")),
-            @ApiResponse(responseCode = "500", description = "Error interno al eliminar",
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor",
                     content = @Content(mediaType = "application/json"))
     })
-    public ResponseEntity<ApiResponseDto> delete(@PathVariable Long id) {
+    public ResponseEntity<APIResponse> delete(@PathVariable Long id) {
         return eventTypeServices.delete(id);
     }
 }
