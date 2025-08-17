@@ -1,14 +1,15 @@
 package mx.edu.utez.rbbackendcomite.models.eventType;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import mx.edu.utez.rbbackendcomite.models.event.EventEntity;
 
-//Aqui va la importacion de event type
-//import mx.edu.utez.rbbackcomite.models.event.EventEntity;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Table(name = "event_types")
-@Data
+
 public class EventTypeEntity {
 
     @Id
@@ -17,6 +18,39 @@ public class EventTypeEntity {
 
     private String name; // "Limpieza", "Reforestación", etc.
 
-    /*@OneToMany(mappedBy = "type")
-    private List<EventEntity> events = new ArrayList<>();*/
+    @OneToMany(mappedBy = "type")
+    private List<EventEntity> events = new ArrayList<>();
+
+    public EventTypeEntity(Long id, String name, List<EventEntity> events) {
+        this.id = id;
+        this.name = name;
+        this.events = events;
+    }
+
+    public EventTypeEntity() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<EventEntity> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<EventEntity> events) {
+        this.events = events;
+    }
 }

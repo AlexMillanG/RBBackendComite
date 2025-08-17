@@ -2,11 +2,8 @@ package mx.edu.utez.rbbackendcomite.models.role;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
+
 public class RoleDto {
     private Long id;
 
@@ -19,5 +16,21 @@ public class RoleDto {
         entity.setId(this.id);
         entity.setName(this.name);
         return entity;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -1,10 +1,10 @@
 package mx.edu.utez.rbbackendcomite.services.role;
 
-import lombok.RequiredArgsConstructor;
 import mx.edu.utez.rbbackendcomite.config.ApiResponseDto;
 import mx.edu.utez.rbbackendcomite.models.role.RoleDto;
 import mx.edu.utez.rbbackendcomite.models.role.RoleEntity;
 import mx.edu.utez.rbbackendcomite.models.role.RoleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,10 +13,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+
 public class RoleServices {
 
-    private final RoleRepository repository;
+    @Autowired
+    private RoleRepository repository;
 
     public ResponseEntity<ApiResponseDto> getAll() {
         List<RoleEntity> roles = repository.findAll();

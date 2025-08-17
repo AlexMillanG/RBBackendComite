@@ -1,6 +1,5 @@
 package mx.edu.utez.rbbackendcomite.services.user;
 
-import lombok.RequiredArgsConstructor;
 import mx.edu.utez.rbbackendcomite.config.ApiResponseDto;
 import mx.edu.utez.rbbackendcomite.models.group.GroupEntity;
 import mx.edu.utez.rbbackendcomite.models.group.GroupRepository;
@@ -9,6 +8,7 @@ import mx.edu.utez.rbbackendcomite.models.role.RoleRepository;
 import mx.edu.utez.rbbackendcomite.models.user.UserDto;
 import mx.edu.utez.rbbackendcomite.models.user.UserEntity;
 import mx.edu.utez.rbbackendcomite.models.user.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,14 +17,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class UserServices {
-
-    private final UserRepository repository;
-    private final RoleRepository roleRepository;
-    private final GroupRepository groupRepository;
-  //  private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository repository;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private GroupRepository groupRepository;
+    //private PasswordEncoder passwordEncoder;
 
     public ResponseEntity<ApiResponseDto> getAll() {
         List<UserEntity> users = repository.findAll();

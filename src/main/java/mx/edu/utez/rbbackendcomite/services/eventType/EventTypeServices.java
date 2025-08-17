@@ -1,10 +1,10 @@
 package mx.edu.utez.rbbackendcomite.services.eventType;
 
-import lombok.RequiredArgsConstructor;
 import mx.edu.utez.rbbackendcomite.config.ApiResponseDto;
 import mx.edu.utez.rbbackendcomite.models.eventType.EventTypeDto;
 import mx.edu.utez.rbbackendcomite.models.eventType.EventTypeEntity;
 import mx.edu.utez.rbbackendcomite.models.eventType.EventTypeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class EventTypeServices {
 
-    private final EventTypeRepository repository;
+    @Autowired
+    private EventTypeRepository repository;
 
     public ResponseEntity<ApiResponseDto> getAll() {
         List<EventTypeEntity> types = repository.findAll();

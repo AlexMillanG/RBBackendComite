@@ -1,15 +1,14 @@
 package mx.edu.utez.rbbackendcomite.models.role;
 
 import jakarta.persistence.*;
-import lombok.Data;
-//import mx.edu.utez.rbbackcomite.models.user.UserEntity;
+import mx.edu.utez.rbbackendcomite.models.user.UserEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "roles")
-@Data
+
 public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,12 +16,16 @@ public class RoleEntity {
 
     private String name; // "ADMIN", "GROUP_ADMIN", "MEMBER"
 
-    public RoleEntity() {
-    }
+    @OneToMany(mappedBy = "role")
+    private List<UserEntity> users = new ArrayList<>();
 
-    public RoleEntity(Long id, String name) {
+    public RoleEntity(Long id, String name, List<UserEntity> users) {
         this.id = id;
         this.name = name;
+        this.users = users;
+    }
+
+    public RoleEntity() {
     }
 
     public Long getId() {
@@ -41,8 +44,11 @@ public class RoleEntity {
         this.name = name;
     }
 
-    /*@OneToMany(mappedBy = "role")
-    private List<UserEntity> users = new ArrayList<>();*/
+    public List<UserEntity> getUsers() {
+        return users;
+    }
 
-
+    public void setUsers(List<UserEntity> users) {
+        this.users = users;
+    }
 }

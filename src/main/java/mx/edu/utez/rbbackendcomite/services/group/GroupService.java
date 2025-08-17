@@ -1,11 +1,11 @@
 package mx.edu.utez.rbbackendcomite.services.group;
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import mx.edu.utez.rbbackendcomite.config.ApiResponseDto;
 import mx.edu.utez.rbbackendcomite.models.group.GroupDto;
 import mx.edu.utez.rbbackendcomite.models.group.GroupEntity;
 import mx.edu.utez.rbbackendcomite.models.group.GroupRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class GroupService {
 
-    private final GroupRepository groupRepository;
+    @Autowired
+    private GroupRepository groupRepository;
 
     public ResponseEntity<ApiResponseDto> save(@Valid GroupDto dto) {
         // Validar que no exista un grupo con el mismo nombre (opcional)
