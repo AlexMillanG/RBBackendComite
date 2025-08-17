@@ -8,8 +8,8 @@ import mx.edu.utez.rbbackendcomite.models.event.EventRepository;
 import mx.edu.utez.rbbackendcomite.models.event.EventStatus;
 import mx.edu.utez.rbbackendcomite.models.eventType.EventTypeRepository;
 import mx.edu.utez.rbbackendcomite.models.group.GroupRepository;
-//import mx.edu.utez.rbbackendcomite.models.user.UserEntity;
-//import mx.edu.utez.rbbackendcomite.models.user.UserRepository;
+import mx.edu.utez.rbbackendcomite.models.user.UserEntity;
+import mx.edu.utez.rbbackendcomite.models.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,13 +25,13 @@ public class EventService {
     private final EventRepository repository;
     private final EventTypeRepository eventTypeRepository;
     private final GroupRepository groupRepository;
-   // private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public EventService(EventRepository repository, EventTypeRepository eventTypeRepository,
-                        GroupRepository groupRepository) {
+    public EventService(EventRepository repository, EventTypeRepository eventTypeRepository, GroupRepository groupRepository,UserRepository userRepository) {
         this.repository = repository;
         this.eventTypeRepository = eventTypeRepository;
         this.groupRepository = groupRepository;
+        this.userRepository = userRepository;
 
     }
 
@@ -118,7 +118,7 @@ public class EventService {
         }
     }
 
-    public ResponseEntity<ApiResponseDto> getEventsByGroup(Long groupId) {
+    public ResponseEntity<ApiResponseDto> getEventsByGroupId(Long groupId) {
         if (!groupRepository.existsById(groupId)) {
             return ResponseEntity.badRequest().body(new ApiResponseDto(null, true, "Grupo no encontrado"));
         }
@@ -126,7 +126,7 @@ public class EventService {
         return ResponseEntity.ok(new ApiResponseDto(events, false, "Eventos del grupo encontrados"));
     }
 
-    public ResponseEntity<ApiResponseDto> getEventsByType(Long typeId) {
+    public ResponseEntity<ApiResponseDto> getEventsByTypeId(Long typeId) {
         if (!eventTypeRepository.existsById(typeId)) {
             return ResponseEntity.badRequest().body(new ApiResponseDto(null, true, "Tipo de evento no encontrado"));
         }
@@ -134,7 +134,7 @@ public class EventService {
         return ResponseEntity.ok(new ApiResponseDto(events, false, "Eventos del tipo encontrados"));
     }
 
-   /* public ResponseEntity<ApiResponseDto> setUsersToEvent(Long eventId, List<Long> userIds) {
+    public ResponseEntity<ApiResponseDto> setUsersToEvent(Long eventId, List<Long> userIds) {
         Optional<EventEntity> optionalEvent = repository.findById(eventId);
         if (optionalEvent.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -156,5 +156,5 @@ public class EventService {
         event.setParticipants(users);
         EventEntity updatedEvent = repository.save(event);
         return ResponseEntity.ok(new ApiResponseDto(updatedEvent, false, "Usuarios asignados al evento correctamente"));
-    }*/
+    }
 }

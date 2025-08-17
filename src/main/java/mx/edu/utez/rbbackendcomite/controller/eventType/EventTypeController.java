@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/api/eventType")
 @Tag(name = "Controlador de Event Type" , description = "Operaciones realizadas con los event type")
-@SecurityRequirement(name = "barerAuth")
+//@SecurityRequirement(name = "barerAuth")
 public class EventTypeController {
 
     @Autowired
