@@ -1,4 +1,4 @@
-package mx.edu.utez.rbbackendcomite.controller;
+package mx.edu.utez.rbbackendcomite.controller.eventType;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,10 +16,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 @RestController
-@RequestMapping("/api/eventtype")
-@Tag(name = "Controlador de Event Tyoe" , description = "Operaciones realizadas con los event type")
+@RequestMapping("/api/eventType")
+@Tag(name = "Controlador de Event Type" , description = "Operaciones realizadas con los event type")
 @SecurityRequirement(name = "barerAuth")
-public class eventTypeController {
+public class EventTypeController {
 
     @Autowired
     private EventTypeServices eventTypeServices;

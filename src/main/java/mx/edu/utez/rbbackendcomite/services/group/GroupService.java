@@ -34,6 +34,8 @@ public class GroupService {
         );
     }
 
+
+
     public ResponseEntity<ApiResponseDto> getAll() {
         return new ResponseEntity<>(new ApiResponseDto(groupRepository.findAll(), false, "OK"), HttpStatus.OK);
     }

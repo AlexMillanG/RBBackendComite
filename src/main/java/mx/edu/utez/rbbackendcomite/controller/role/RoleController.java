@@ -1,4 +1,4 @@
-package mx.edu.utez.rbbackendcomite.controller;
+package mx.edu.utez.rbbackendcomite.controller.role;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
