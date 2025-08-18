@@ -1,5 +1,6 @@
 package mx.edu.utez.rbbackendcomite.models.role;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import mx.edu.utez.rbbackendcomite.models.user.UserEntity;
 
@@ -16,6 +17,7 @@ public class RoleEntity {
 
     private String name; // "ADMIN", "GROUP_ADMIN", "MEMBER"
 
+    @JsonIgnore
     @OneToMany(mappedBy = "role")
     private List<UserEntity> users = new ArrayList<>();
 

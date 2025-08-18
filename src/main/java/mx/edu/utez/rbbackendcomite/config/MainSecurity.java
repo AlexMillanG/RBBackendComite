@@ -17,18 +17,21 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
-/*
+
 @Configuration
 @EnableWebSecurity
 public class MainSecurity {
 
     @Autowired
-    private JWTFilter jwtFilter;
+    private  JWTFilter jwtFilter;
 
-    private final String[] SWAGGER_URLS = {"/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-resources/**", "/webjars/**"};
+    private final String[] SWAGGER_URLS = {
+            "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**",
+            "/v3/api-docs.yaml", "/swagger-resources/**", "/webjars/**"
+    };
 
     @Bean
-    public SecurityFilterChain doFilterInternal(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(c -> c.disable())
                 .cors(c -> c.configurationSource(corsRegistry()))
@@ -47,6 +50,7 @@ public class MainSecurity {
     }
 
 
+
     private CorsConfigurationSource corsRegistry() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("*"));
@@ -63,30 +67,5 @@ public class MainSecurity {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-}*/
-
-    /*
-    @Bean
-    public UserDetailsService generateUser(){
-        UserDetails admin = User.builder()
-                .username("Superadmin")
-                .password(passwordEncoder().encode("admin"))
-                .roles("ADMIN")
-                .build();
-
-        UserDetails employee = User.builder()
-                .username("Santos")
-                .password(passwordEncoder().encode("root"))
-                .roles("EMPLOYEE")
-                .build();
-
-        UserDetails swaggerAdmin = User.builder()
-                .username("swaggeradmin")
-                .password(passwordEncoder().encode("#San12sa"))
-                .roles("DEV")
-                .build();
-
-        return new InMemoryUserDetailsManager(admin, employee, swaggerAdmin);
-    }
-    */
+}
 

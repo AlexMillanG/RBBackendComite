@@ -26,7 +26,18 @@ public class JWTFilter extends OncePerRequestFilter {
     private JWTUtils jwtUtils; // Este nos va a ayudar a manipular el token
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
+
+        String path = request.getRequestURI();
+
+        // whitelist de rutas públicas
+        if(path.startsWith("/api/auth") || path.startsWith("/swagger-ui") || path.startsWith("/v3/api-docs")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         final String AUTHORIZATION_HEADER = request.getHeader("Authorization");
         String username = null;
         String token = null;
@@ -43,12 +54,18 @@ public class JWTFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities()
                 );
-
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+            } else {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido");
+                return;
             }
+        } else if (username == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token faltante");
+            return;
         }
 
         filterChain.doFilter(request, response);
     }
+
 }
