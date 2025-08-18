@@ -3,6 +3,8 @@ package mx.edu.utez.rbbackendcomite.security.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import mx.edu.utez.rbbackendcomite.models.role.RoleEntity;
+import mx.edu.utez.rbbackendcomite.utils.UserTokenDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -65,8 +67,18 @@ public class JWTUtils {
     }
 
     // Esta función consume la función de crear solo para retornar
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, UserTokenDto userTokenDto) {
+        String authority = userDetails.getAuthorities().stream()
+                .findFirst()
+                .map(grantedAuthority -> grantedAuthority.getAuthority())
+                .orElse("");
+        RoleEntity role = new RoleEntity();
+        role.setName(authority);
+        userTokenDto.setRole(role);
         Map<String, Object> claims = new HashMap<>();
+        claims.put("userData", userTokenDto);
+
         return createToken(claims, userDetails.getUsername());
     }
+
 }

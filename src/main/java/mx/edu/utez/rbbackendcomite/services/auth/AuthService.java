@@ -7,6 +7,7 @@ import mx.edu.utez.rbbackendcomite.models.user.UserRepository;
 import mx.edu.utez.rbbackendcomite.security.jwt.JWTUtils;
 import mx.edu.utez.rbbackendcomite.security.jwt.UDService;
 import mx.edu.utez.rbbackendcomite.utils.PasswordEncoderService;
+import mx.edu.utez.rbbackendcomite.utils.UserTokenDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,8 +37,16 @@ public class AuthService {
             if (!PasswordEncoderService.verifyPassword(payload.getPassword(), found.getPassword()))
                 return new ApiResponseDto("Las contrasenas no coniciden", true, HttpStatus.BAD_REQUEST);
 
+            UserTokenDto userTokenDto = new UserTokenDto(
+                    found.getUsername(),
+                    found.getFullName(),
+                    found.getPhone(),
+                    found.getEmail(),
+                    found.getRole()
+            );
+
             UserDetails ud = udService.loadUserByUsername(found.getUsername());
-            String token = jwtUtils.generateToken(ud);
+            String token = jwtUtils.generateToken(ud,userTokenDto);
             return new ApiResponseDto(token,  false,"Operacion exitosa", HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
