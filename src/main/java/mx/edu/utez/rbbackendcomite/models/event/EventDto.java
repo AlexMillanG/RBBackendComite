@@ -1,6 +1,5 @@
 package mx.edu.utez.rbbackendcomite.models.event;
 
-
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
@@ -20,15 +19,13 @@ public class EventDto {
     private Long typeId;
 
     @NotBlank(message = "El estado no puede estar vacío")
-    @Pattern(regexp = "PRÓXIMAMENTE | EN_EJECUCIÓN | FINALIZADO",
-    message = "El estado debe ser PRÓXIMAMENTE, EN EJECUCIÓN o FINALIZADO")
     private String status;
 
     @NotNull(message = "El ID del grupo no puede ser nulo")
     @Positive(message = "El ID del grupo debe ser un numero positivo")
     private Long groupId;
 
-    private List<@Positive(message = "cada ID de participante debe ser un numero positivo")Long> participantIds;
+    private List<@Positive(message = "cada ID de participante debe ser un numero positivo") Long> participantIds;
 
     public EventEntity toEntity() {
         EventEntity event = new EventEntity();
@@ -53,7 +50,8 @@ public class EventDto {
         return title;
     }
 
-    public void setTitle(@NotBlank(message = "El titulo no puede er vacío") @Size(min = 3, max = 100, message = "El titulo debe tener entre 3 y 100 carcteres") String title) {
+    public void setTitle(
+            @NotBlank(message = "El titulo no puede er vacío") @Size(min = 3, max = 100, message = "El titulo debe tener entre 3 y 100 carcteres") String title) {
         this.title = title;
     }
 
@@ -61,7 +59,8 @@ public class EventDto {
         return date;
     }
 
-    public void setDate(@NotNull(message = "LA fecha no debe de ser nula") @FutureOrPresent(message = "LA fecha debe ser hoy o en el futuro") LocalDate date) {
+    public void setDate(
+            @NotNull(message = "LA fecha no debe de ser nula") @FutureOrPresent(message = "LA fecha debe ser hoy o en el futuro") LocalDate date) {
         this.date = date;
     }
 
@@ -69,17 +68,16 @@ public class EventDto {
         return typeId;
     }
 
-    public void setTypeId(@NotNull(message = "El id del tipo de evento no puede ser nulo") @Positive(message = "El id del tipo de evento debe ser un numero positivo") Long typeId) {
+    public void setTypeId(
+            @NotNull(message = "El id del tipo de evento no puede ser nulo") @Positive(message = "El id del tipo de evento debe ser un numero positivo") Long typeId) {
         this.typeId = typeId;
     }
 
-    public @NotBlank(message = "El estado no puede estar vacío") @Pattern(regexp = "PRÓXIMAMENTE | EN EJECUCIÓN | FINALIZADO",
-            message = "El estado debe ser PRÓXIMAMENTE, EN EJECUCIÓN o FINALIZADO") String getStatus() {
+    public @NotBlank(message = "El estado no puede estar vacío") String getStatus() {
         return status;
     }
 
-    public void setStatus(@NotBlank(message = "El estado no puede estar vacío") @Pattern(regexp = "PRÓXIMAMENTE | EN EJECUCIÓN | FINALIZADO",
-            message = "El estado debe ser PRÓXIMAMENTE, EN EJECUCIÓN o FINALIZADO") String status) {
+    public void setStatus(@NotBlank(message = "El estado no puede estar vacío") String status) {
         this.status = status;
     }
 
@@ -87,7 +85,8 @@ public class EventDto {
         return groupId;
     }
 
-    public void setGroupId(@NotNull(message = "El ID del grupo no puede ser nulo") @Positive(message = "El ID del grupo debe ser un numero positivo") Long groupId) {
+    public void setGroupId(
+            @NotNull(message = "El ID del grupo no puede ser nulo") @Positive(message = "El ID del grupo debe ser un numero positivo") Long groupId) {
         this.groupId = groupId;
     }
 }

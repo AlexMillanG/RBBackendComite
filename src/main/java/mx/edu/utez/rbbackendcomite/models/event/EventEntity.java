@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="events")
 
@@ -24,6 +26,7 @@ public class EventEntity {
 
     @ManyToOne
     @JoinColumn(name = "type_id")
+    @JsonIgnore
     private EventTypeEntity type;
 
     @ManyToMany
@@ -32,12 +35,14 @@ public class EventEntity {
             joinColumns = @JoinColumn(name = "event_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
+    @JsonIgnore
     private List<UserEntity> participants = new ArrayList<>();
 
 
 
     @ManyToOne
    @JoinColumn(name = "group_id")
+   @JsonIgnore
    private GroupEntity group;
 
     public EventEntity(Long id, String title, LocalDate date, EventStatus status, EventTypeEntity type, List<UserEntity> participants, GroupEntity group) {
@@ -108,4 +113,7 @@ public class EventEntity {
     public void setGroup(GroupEntity group) {
         this.group = group;
     }
+
+    
 }
+
