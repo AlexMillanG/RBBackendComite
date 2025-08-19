@@ -8,6 +8,8 @@ import mx.edu.utez.rbbackendcomite.models.role.RoleEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "users")
 
@@ -28,9 +30,11 @@ public class UserEntity {
 
     @ManyToOne
     @JoinColumn(name = "group_id")
+    @JsonIgnore 
     private GroupEntity group;
 
     @ManyToMany(mappedBy = "participants")
+    @JsonIgnore 
     private List<EventEntity> events = new ArrayList<>();
 
     public UserEntity(Long id, String username, String password, String fullName, String phone, String email, RoleEntity role, GroupEntity group, List<EventEntity> events) {
