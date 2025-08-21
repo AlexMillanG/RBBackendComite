@@ -1,5 +1,6 @@
 package mx.edu.utez.rbbackendcomite.models.eventType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import mx.edu.utez.rbbackendcomite.models.event.EventEntity;
 
@@ -18,6 +19,7 @@ public class EventTypeEntity {
 
     private String name; // "Limpieza", "Reforestación", etc.
 
+    @JsonIgnore
     @OneToMany(mappedBy = "type")
     private List<EventEntity> events = new ArrayList<>();
 

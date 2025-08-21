@@ -61,7 +61,7 @@ public class EventService {
         EventEntity event = new EventEntity();
         event.setTitle(dto.getTitle());
         event.setDate(dto.getDate());
-        event.setStatus(EventStatus.valueOf(dto.getStatus()));
+        event.setStatus(dto.getStatus());
         event.setType(eventType.get());
         event.setGroup(group.get());
 
@@ -90,7 +90,7 @@ public class EventService {
         EventEntity entity = found.get();
         entity.setTitle(dto.getTitle());
         entity.setDate(dto.getDate());
-        entity.setStatus(EventStatus.valueOf(dto.getStatus()));
+        entity.setStatus(dto.getStatus());
         entity.setType(eventType.get());
         entity.setGroup(group.get());
 
@@ -173,7 +173,7 @@ public class EventService {
         );
     }
 
-    public  ResponseEntity<ApiResponseDto> getEventsByUserService(Long userId) {
+    public  ResponseEntity<ApiResponseDto> getEventsByUser(Long userId) {
         Optional<UserEntity> optionalUser = userRepository.findById(userId);
         if (optionalUser.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)

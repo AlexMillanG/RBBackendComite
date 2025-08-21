@@ -1,5 +1,7 @@
 package mx.edu.utez.rbbackendcomite.models.userHasEvents;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import mx.edu.utez.rbbackendcomite.models.event.EventEntity;
@@ -16,10 +18,14 @@ public class EventParticipantEntity {
     // Relación hacia evento
     @ManyToOne
     @JoinColumn(name = "event_id")
+    @JsonBackReference
+
     private EventEntity event;
 
     // Relación hacia usuario
     @ManyToOne
+    @JsonBackReference
+
     @JoinColumn(name = "user_id")
     private UserEntity user;
 

@@ -1,5 +1,6 @@
 package mx.edu.utez.rbbackendcomite.models.group;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import mx.edu.utez.rbbackendcomite.models.event.EventEntity;
 import mx.edu.utez.rbbackendcomite.models.user.UserEntity;
@@ -23,6 +24,7 @@ public class GroupEntity {
     private List<UserEntity> members = new ArrayList<>();
 
     @OneToMany(mappedBy = "group")
+    @JsonIgnore
     private List<EventEntity> events = new ArrayList<>();
 
     public GroupEntity(Long id, String name, String municipality, String neighborhood, List<UserEntity> members, List<EventEntity> events) {

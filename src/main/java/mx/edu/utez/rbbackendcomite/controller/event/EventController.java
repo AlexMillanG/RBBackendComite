@@ -124,5 +124,19 @@ public class EventController {
         return eventService.setAttendance(eventId, userId, confirmed);
     }
 
+    @Operation(summary = "Obtener eventos por usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Eventos del usuario obtenidos correctamente",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ApiResponseDto.class))),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ApiResponseDto.class)))
+    })
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<ApiResponseDto> getEventsByUser(@Parameter(description = "ID del usuario") @PathVariable Long userId) {
+        return eventService.getEventsByUser(userId);
+    }
+
 
 }

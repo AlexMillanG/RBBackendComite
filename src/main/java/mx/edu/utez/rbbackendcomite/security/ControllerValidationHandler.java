@@ -3,6 +3,7 @@ package mx.edu.utez.rbbackendcomite.security;
 import mx.edu.utez.rbbackendcomite.config.ApiResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,5 +27,12 @@ public class ControllerValidationHandler {
                 HttpStatus.BAD_REQUEST
         );
         return new ResponseEntity<>(response, response.getStatus());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiResponseDto> handleEnumDeserialization(HttpMessageNotReadableException ex) {
+        String message = "Valor inválido para un campo enumerado. Asegúrate de usar uno de los valores permitidos.";
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponseDto(null, true, message));
     }
 }

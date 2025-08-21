@@ -1,5 +1,6 @@
 package mx.edu.utez.rbbackendcomite.models.event;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import mx.edu.utez.rbbackendcomite.models.eventType.EventTypeEntity;
@@ -28,8 +29,9 @@ public class EventEntity {
 
     @ManyToOne
     @JoinColumn(name = "type_id")
-    @JsonIgnore
+
     private EventTypeEntity type;
+    @JsonManagedReference
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EventParticipantEntity> participants = new ArrayList<>();

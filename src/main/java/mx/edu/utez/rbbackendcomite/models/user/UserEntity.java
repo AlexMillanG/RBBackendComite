@@ -1,5 +1,6 @@
 package mx.edu.utez.rbbackendcomite.models.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import mx.edu.utez.rbbackendcomite.models.group.GroupEntity;
@@ -36,6 +37,8 @@ public class UserEntity {
     private GroupEntity group;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+
     private List<EventParticipantEntity> events = new ArrayList<>();
 
 
