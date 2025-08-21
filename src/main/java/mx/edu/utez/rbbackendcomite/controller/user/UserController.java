@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import mx.edu.utez.rbbackendcomite.config.ApiResponseDto;
 import mx.edu.utez.rbbackendcomite.models.user.UserDto;
@@ -33,8 +32,7 @@ public class UserController {
         @ApiResponse(responseCode = "201", description = "Usuario creado correctamente", content = @Content(schema = @Schema(implementation = ApiResponseDto.class)))
         @ApiResponse(responseCode = "400", description = "Datos inválidos o conflictos (username/email ya existentes)")
         @PostMapping
-        public ResponseEntity<ApiResponseDto> create(
-                        @RequestBody UserDto dto) {
+        public ResponseEntity<ApiResponseDto> create(@RequestBody UserDto dto) {
                 return service.insert(dto);
         }
 
@@ -42,8 +40,7 @@ public class UserController {
         @ApiResponse(responseCode = "200", description = "Usuario encontrado", content = @Content(schema = @Schema(implementation = ApiResponseDto.class)))
         @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
         @GetMapping("/{id}")
-        public ResponseEntity<ApiResponseDto> findOne(
-                        @Parameter(description = "ID del usuario") @PathVariable Long id) {
+        public ResponseEntity<ApiResponseDto> findOne(@Parameter(description = "ID del usuario") @PathVariable Long id) {
                 return service.getOne(id);
         }
 
@@ -51,9 +48,7 @@ public class UserController {
         @ApiResponse(responseCode = "200", description = "Usuario actualizado correctamente", content = @Content(schema = @Schema(implementation = ApiResponseDto.class)))
         @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
         @PutMapping("/{id}")
-        public ResponseEntity<ApiResponseDto> update(
-                        @Parameter(description = "ID del usuario a actualizar") @PathVariable Long id,
-                        @RequestBody UserDto dto) {
+        public ResponseEntity<ApiResponseDto> update(@Parameter(description = "ID del usuario a actualizar") @PathVariable Long id, @RequestBody UserDto dto) {
                 return service.update(id, dto);
         }
 
@@ -61,24 +56,30 @@ public class UserController {
         @ApiResponse(responseCode = "200", description = "Usuario eliminado correctamente", content = @Content(schema = @Schema(implementation = ApiResponseDto.class)))
         @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
         @DeleteMapping("/{id}")
-        public ResponseEntity<ApiResponseDto> delete(
-                        @Parameter(description = "ID del usuario a eliminar") @PathVariable Long id) {
+        public ResponseEntity<ApiResponseDto> delete(@Parameter(description = "ID del usuario a eliminar") @PathVariable Long id) {
                 return service.delete(id);
+        }
+
+        @Operation(summary = "Obtener usuarios por rol")
+        @ApiResponse(responseCode = "200", description = "Usuarios filtrados por rol", content = @Content(schema = @Schema(implementation = ApiResponseDto.class)))
+        @GetMapping("/usersByRole/{roleId}")
+        public ResponseEntity<ApiResponseDto> getUsersByRole(@Parameter(description = "ID del rol") @PathVariable Long roleId) {
+                return service.getUsersByRole(roleId);
+        }
+
+        @Operation(summary = "Obtener usuarios por evento")
+        @ApiResponse(responseCode = "200", description = "Usuarios filtrados por evento", content = @Content(schema = @Schema(implementation = ApiResponseDto.class)))
+        @GetMapping("/usersByEvent/{eventId}")
+        public ResponseEntity<ApiResponseDto> getUsersByEvent(@Parameter(description = "ID del evento") @PathVariable Long eventId) {
+                return service.getUsersByEvent(eventId);
         }
 
         @Operation(summary = "Obtener usuarios por grupo")
         @ApiResponse(responseCode = "200", description = "Usuarios filtrados por grupo", content = @Content(schema = @Schema(implementation = ApiResponseDto.class)))
         @GetMapping("usersByGroup/{groupId}")
-        public ResponseEntity<ApiResponseDto> getUsersByGroup(
-                        @Parameter(description = "ID del grupo") @PathVariable Long groupId) {
+        public ResponseEntity<ApiResponseDto> getUsersByGroup(@Parameter(description = "ID del grupo") @PathVariable Long groupId) {
                 return service.getUsersByGroup(groupId);
         }
 
-        @Operation(summary = "Obtener usuarios por rol")
-        @ApiResponse(responseCode = "200", description = "Usuarios filtrados por rol", content = @Content(schema = @Schema(implementation = ApiResponseDto.class)))
-        @GetMapping("usersByRole/{roleId}")
-        public ResponseEntity<ApiResponseDto> getUsersByRole(
-                        @Parameter(description = "ID del rol") @PathVariable Long roleId) {
-                return service.getUsersByRole(roleId);
-        }
+
 }

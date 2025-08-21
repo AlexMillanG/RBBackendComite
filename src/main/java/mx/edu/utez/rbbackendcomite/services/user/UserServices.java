@@ -1,6 +1,8 @@
 package mx.edu.utez.rbbackendcomite.services.user;
 
 import mx.edu.utez.rbbackendcomite.config.ApiResponseDto;
+import mx.edu.utez.rbbackendcomite.models.event.EventEntity;
+import mx.edu.utez.rbbackendcomite.models.event.EventRepository;
 import mx.edu.utez.rbbackendcomite.models.group.GroupEntity;
 import mx.edu.utez.rbbackendcomite.models.group.GroupRepository;
 import mx.edu.utez.rbbackendcomite.models.role.RoleEntity;
@@ -9,6 +11,7 @@ import mx.edu.utez.rbbackendcomite.models.user.UserDto;
 import mx.edu.utez.rbbackendcomite.models.user.UserEntity;
 import mx.edu.utez.rbbackendcomite.models.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +28,8 @@ public class UserServices {
     private RoleRepository roleRepository;
     @Autowired
     private GroupRepository groupRepository;
+    @Autowired
+    private EventRepository eventRepository;
     //private PasswordEncoder passwordEncoder;
 
     public ResponseEntity<ApiResponseDto> getAll() {
@@ -150,4 +155,23 @@ public class UserServices {
         List<UserEntity> users = repository.findByRoleId(roleId);
         return ResponseEntity.ok(new ApiResponseDto(users, false, "Usuarios con el rol encontrados"));
     }
+
+    public ResponseEntity<ApiResponseDto> getUsersByEvent(Long eventId) {
+        Optional<EventEntity> optionalEvent = eventRepository.findById(eventId);
+
+        if (optionalEvent.isEmpty()) {
+            return new ResponseEntity<>(
+                    new ApiResponseDto(null, true, "El evento no existe"),
+                    HttpStatus.NOT_FOUND
+            );
+        }
+
+        EventEntity event = optionalEvent.get();
+        return new ResponseEntity<>(
+                new ApiResponseDto(event.getParticipants(), false, "OK"),
+                HttpStatus.OK
+        );
+    }
+
+
 }
