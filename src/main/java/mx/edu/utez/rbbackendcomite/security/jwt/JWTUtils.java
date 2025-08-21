@@ -50,7 +50,8 @@ public class JWTUtils {
         return exctractExpirationDate(token).before(new Date());
     }
 
-    // Esta función consume la función de arriba, también verifica que coincida el usuario con su token
+    // Esta función consume la función de arriba, también verifica que coincida el
+    // usuario con su token
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String USERNAME = exctractUsername(token);
         return (USERNAME.equals(userDetails.getUsername()) && !isTokenExpired(token));
@@ -72,11 +73,20 @@ public class JWTUtils {
                 .findFirst()
                 .map(grantedAuthority -> grantedAuthority.getAuthority())
                 .orElse("");
-        RoleEntity role = new RoleEntity();
-        role.setName(authority);
-        userTokenDto.setRole(role);
+
+        Map<String, Object> roleData = new HashMap<>();
+        roleData.put("id", userTokenDto.getRole() != null ? userTokenDto.getRole().getId() : null);
+        roleData.put("name", authority);
+
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("username", userTokenDto.getUsername());
+        userData.put("fullName", userTokenDto.getFullName());
+        userData.put("phone", userTokenDto.getPhone());
+        userData.put("email", userTokenDto.getEmail());
+        userData.put("role", roleData);
+
         Map<String, Object> claims = new HashMap<>();
-        claims.put("userData", userTokenDto);
+        claims.put("userData", userData);
 
         return createToken(claims, userDetails.getUsername());
     }

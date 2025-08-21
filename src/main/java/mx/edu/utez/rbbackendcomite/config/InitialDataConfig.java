@@ -50,7 +50,7 @@ public class InitialDataConfig {
         if (!userRepository.existsByUsername("admin")) {
             UserEntity admin = new UserEntity();
             admin.setUsername("admin");
-            admin.setPassword(PasswordEncoderService.encodePassword("AdminSecure123!"));
+            admin.setPassword(PasswordEncoderService.encodePassword("admin123"));
             admin.setFullName("Administrador Principal");
             admin.setEmail("admin@correo.com");
             admin.setPhone("5512345678");
