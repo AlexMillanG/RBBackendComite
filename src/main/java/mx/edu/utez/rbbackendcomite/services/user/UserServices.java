@@ -10,6 +10,7 @@ import mx.edu.utez.rbbackendcomite.models.role.RoleRepository;
 import mx.edu.utez.rbbackendcomite.models.user.UserDto;
 import mx.edu.utez.rbbackendcomite.models.user.UserEntity;
 import mx.edu.utez.rbbackendcomite.models.user.UserRepository;
+import mx.edu.utez.rbbackendcomite.models.user.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +34,12 @@ public class UserServices {
     //private PasswordEncoder passwordEncoder;
 
     public ResponseEntity<ApiResponseDto> getAll() {
-        List<UserEntity> users = repository.findAll();
-        return ResponseEntity.ok(new ApiResponseDto(users, false, "Usuarios encontrados"));
+        List<UserResponseDto> response = repository.findAll()
+                .stream()
+                .map(UserResponseDto::new)
+                .toList();
+
+        return new ResponseEntity<>(new ApiResponseDto(response, false, "OK"), HttpStatus.OK);
     }
 
     public ResponseEntity<ApiResponseDto> getOne(Long id) {
