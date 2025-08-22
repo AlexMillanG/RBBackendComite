@@ -1,7 +1,6 @@
 package mx.edu.utez.rbbackendcomite.models.userHasEvents;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import mx.edu.utez.rbbackendcomite.models.event.EventEntity;
@@ -18,18 +17,14 @@ public class EventParticipantEntity {
     // Relación hacia evento
     @ManyToOne
     @JoinColumn(name = "event_id")
-    @JsonBackReference
-
+    @JsonIgnoreProperties("participants") // Evita recursión
     private EventEntity event;
 
     // Relación hacia usuario
     @ManyToOne
-    @JsonBackReference
-
     @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties({"events", "group", "role"}) // Excluye propiedades que puedan causar recursión
     private UserEntity user;
 
-    // Campo adicional
-    private Boolean confirmed = false; // si el usuario confirmó o no
-
+    private Boolean confirmed = false;
 }

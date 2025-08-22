@@ -7,6 +7,7 @@ import mx.edu.utez.rbbackendcomite.models.event.EventDto;
 import mx.edu.utez.rbbackendcomite.models.event.EventEntity;
 import mx.edu.utez.rbbackendcomite.models.event.EventRepository;
 import mx.edu.utez.rbbackendcomite.models.event.EventStatus;
+import mx.edu.utez.rbbackendcomite.models.event.EventStatusRequest;
 import mx.edu.utez.rbbackendcomite.models.eventType.EventTypeRepository;
 import mx.edu.utez.rbbackendcomite.models.group.GroupRepository;
 import mx.edu.utez.rbbackendcomite.models.user.UserEntity;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,8 +34,6 @@ public class EventService {
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
     private final EventParticipantRepository participantRepository;
-
-
 
     public ResponseEntity<ApiResponseDto> getAll() {
         List<EventEntity> events = repository.findAll();
@@ -169,11 +169,10 @@ public class EventService {
         }
 
         return ResponseEntity.ok(
-                new ApiResponseDto(null, false, "Usuarios asignados al evento correctamente")
-        );
+                new ApiResponseDto(null, false, "Usuarios asignados al evento correctamente"));
     }
 
-    public  ResponseEntity<ApiResponseDto> getEventsByUser(Long userId) {
+    public ResponseEntity<ApiResponseDto> getEventsByUser(Long userId) {
         Optional<UserEntity> optionalUser = userRepository.findById(userId);
         if (optionalUser.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -219,11 +218,28 @@ public class EventService {
         String message = confirmed ? "Asistencia confirmada correctamente" : "Confirmación cancelada correctamente";
 
         return ResponseEntity.ok(
-                new ApiResponseDto(participant, false, message)
-        );
+                new ApiResponseDto(participant, false, message));
     }
 
+    public ResponseEntity<ApiResponseDto> updateEventStatus(Long id, EventStatusRequest request) {
+        Optional<EventEntity> found = repository.findById(id);
+        if (found.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponseDto(null, true, "Evento no encontrado"));
+        }
 
+        try {
+            EventStatus eventStatus = EventStatus.valueOf(request.getStatus());
+            EventEntity entity = found.get();
+            entity.setStatus(eventStatus);
 
+            EventEntity updated = repository.save(entity);
+            return ResponseEntity.ok(new ApiResponseDto(updated, false, "Estado del evento actualizado correctamente"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body(new ApiResponseDto(null, true, "Estado de evento no válido. Valores permitidos: " +
+                            Arrays.toString(EventStatus.values())));
+        }
+    }
 
 }
